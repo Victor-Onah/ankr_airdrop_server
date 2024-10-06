@@ -6,6 +6,9 @@ import helmet from "helmet";
 import cors from "cors";
 import AdminController from "./controllers/admin-controller.js";
 import TaskController from "./controllers/task-controller.js";
+import { config } from "dotenv";
+
+config();
 
 const allowedOrigins = [
 	"https://web.telegram.org",

@@ -3,6 +3,7 @@ import UserController from "./user-controller.js";
 export default class TelegramBotController {
 	static async handleRequest(req, res) {
 		const { message } = req.body;
+		console.log(req.body);
 
 		if (message) {
 			const { chat, from, text } = message;
@@ -46,8 +47,9 @@ export default class TelegramBotController {
 	}
 
 	static async #handleCommand(chat, command) {
+		const { id, username, last_name, first_name } = chat;
+
 		if (command.startsWith("/start")) {
-			const { id, username, last_name, first_name } = chat;
 			const userExists = await UserController.userExists({ id });
 			const containsReferralCode = /^\/start\s[a-zA-Z0-9]{10}$/.test(
 				command

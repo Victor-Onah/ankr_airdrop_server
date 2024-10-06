@@ -80,30 +80,11 @@ export default class TelegramBotController {
 						}
 					));
 			}
-
-			await TelegramBotController.#sendMessage(
-				id,
-				`**👋 Welcome to the Ankr Airdrop Bot!** \nWe're excited to have you on board! 🎉 \n\nHere's what you can do with this bot: \n- **💰 Earn ANKR tokens** by completing daily tasks and referring friends! \n- **🔗 Get your unique referral link** and invite others to join the airdrop for extra rewards. \n- **📅 Check-in daily** to maintain your task streak and maximize your earnings. \n\nTo get started: \n1. **Click the button below** to sign in. \n2. **Complete daily tasks** to boost your rewards. \n3. **Invite your friends** and earn more ANKR tokens! \n\nReady to start? Let's go! 🚀`,
-				[
-					{
-						text: "Sign In",
-						url: "https://ankr-airdrop-client.onrender.com"
-					}
-				]
-			);
-
-			return;
 		}
 
 		await TelegramBotController.#sendMessage(
 			id,
-			`**👋 Welcome to the Ankr Airdrop Bot!** \nIt's great to have you on board! 🎉\n\nLet's get you signed in!`,
-			[
-				{
-					text: "Sign In",
-					url: "https://ankr-airdrop-client.onrender.com"
-				}
-			]
+			`**👋 Welcome to the Ankr Airdrop Bot!** \nIt's great to have you on board! 🎉\n\nClick on the button that say '**Sign in** to continue!`
 		);
 	}
 }

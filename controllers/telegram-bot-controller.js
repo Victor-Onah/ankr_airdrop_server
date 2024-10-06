@@ -5,13 +5,15 @@ export default class TelegramBotController {
 		const { message } = req.body;
 
 		if (message) {
-			const { chat, from, text, entities } = message;
+			const { chat, from, text } = message;
 			const { type } = chat;
 
 			if (type !== "private") return;
 
 			await TelegramBotController.#handleCommand(from, text);
 		}
+
+		res.sendStatus(200);
 	}
 
 	static async #sendMessage(chatId, text, keyboard) {

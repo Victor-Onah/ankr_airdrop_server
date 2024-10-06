@@ -1,0 +1,5 @@
+.env
+tests
+scripts
+channels.json
+node_modules

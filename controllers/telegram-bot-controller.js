@@ -3,7 +3,6 @@ import UserController from "./user-controller.js";
 export default class TelegramBotController {
 	static async handleRequest(req, res) {
 		const { message } = req.body;
-		console.log(req.body);
 
 		if (message) {
 			const { chat, from, text } = message;
@@ -84,7 +83,7 @@ export default class TelegramBotController {
 
 		await TelegramBotController.#sendMessage(
 			id,
-			`**👋 Welcome to the Ankr Airdrop Bot!** \nIt's great to have you on board! 🎉\n\nClick on the button that says '**Sign in** to continue!`
+			`**👋 Welcome to the Ankr Airdrop Bot!** \nIt's great to have you on board! 🎉\n\nClick on the button that says '**Sign in**' to continue!`
 		);
 	}
 }

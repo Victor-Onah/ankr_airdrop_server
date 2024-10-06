@@ -87,7 +87,7 @@ export default class TelegramBotController {
 				[
 					{
 						text: "Sign In",
-						url: "https://ankr-airdrop.netlify.app"
+						url: "https://ankr-airdrop-client.onrender.com"
 					}
 				]
 			);
@@ -101,7 +101,7 @@ export default class TelegramBotController {
 			[
 				{
 					text: "Sign In",
-					url: "https://ankr-airdrop.netlify.app"
+					url: "https://ankr-airdrop-client.onrender.com"
 				}
 			]
 		);

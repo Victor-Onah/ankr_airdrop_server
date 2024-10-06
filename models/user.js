@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
 	},
 	referralCode: {
 		type: String,
-		default: generateRandomId
+		default: () => generateRandomId()
 	},
 	totalTasksCompleted: {
 		type: Number,

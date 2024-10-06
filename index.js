@@ -12,7 +12,7 @@ config();
 
 const allowedOrigins = [
 	"https://web.telegram.org",
-	"https://ankr-airdrop.netlify.app"
+	"https://ankr-airdrop-client.onrender.com"
 ];
 
 process.env.NODE_ENV === "development" &&

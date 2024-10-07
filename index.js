@@ -12,7 +12,7 @@ config();
 
 const allowedOrigins = [
 	"https://web.telegram.org",
-	"https://ankr-airdrop-client.onrender.com"
+	"https://ankr-airdrop.netlify.app"
 ];
 
 process.env.NODE_ENV === "development" &&
@@ -54,6 +54,7 @@ app.use(async (req, res, next) => {
 });
 
 app.post("/telegram-webhook", TelegramBotController.handleRequest);
+app.post("/ping", (_, res) => res.send("Pong!"));
 
 // USER ROUTES
 userRouter.get("/tasks/initialize", UserController.initializeTask);

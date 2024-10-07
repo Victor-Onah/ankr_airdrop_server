@@ -54,7 +54,7 @@ app.use(async (req, res, next) => {
 });
 
 app.post("/telegram-webhook", TelegramBotController.handleRequest);
-app.post("/ping", (_, res) => res.send("Pong!"));
+app.get("/ping", (_, res) => res.send("Pong!"));
 
 // USER ROUTES
 userRouter.get("/tasks/initialize", UserController.initializeTask);

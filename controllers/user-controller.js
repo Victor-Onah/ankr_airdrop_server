@@ -69,7 +69,7 @@ export default class UserController {
 
 			const decryptedAuthId = atob(authHeader);
 			const userExists = await UserController.userExists({
-				id: decryptedAuthId
+				id: decryptedAuthId,
 			});
 
 			if (!userExists) return res.sendStatus(404);
@@ -125,17 +125,17 @@ export default class UserController {
 						{
 							$lt: [
 								{ $dayOfMonth: "$completedAt" },
-								currentDate.getDate()
-							]
+								currentDate.getDate(),
+							],
 						},
 						{
 							$lt: [
 								{ $month: "$completedAt" },
-								currentDate.getMonth() + 1
-							]
-						}
-					]
-				}
+								currentDate.getMonth() + 1,
+							],
+						},
+					],
+				},
 			});
 		} catch (error) {
 			console.log("DB cleanup error: ", error);
@@ -143,18 +143,19 @@ export default class UserController {
 	}
 
 	static async initializeTask(req, res) {
+		const { task_id, redirect_to, from, id } = req.query;
+
 		try {
-			const { task_id, redirect_to, from, id } = req.query;
 			const isTaskAlreadyDone = await UserTasks.exists({
 				taskId: task_id,
-				userId: id
+				userId: id,
 			});
 
-			if (isTaskAlreadyDone) return res.redirect(307, from);
+			if (isTaskAlreadyDone) return;
 
 			const task = await TaskController.getTask(
 				task_id,
-				"reward recurrence title platform"
+				"reward recurrence title platform",
 			);
 
 			await UserTasks.create({
@@ -164,7 +165,7 @@ export default class UserController {
 				taskRecurrence: task.recurrence,
 				taskTitle: task.title,
 				completedAt: Date.now(),
-				platform: task.platform
+				platform: task.platform,
 			});
 
 			await UserController.updateUser(
@@ -172,19 +173,17 @@ export default class UserController {
 				{
 					balance: {
 						type: "increment",
-						step: task.reward
+						step: task.reward,
 					},
 					totalTasksCompleted: {
-						type: "increment"
-					}
-				}
+						type: "increment",
+					},
+				},
 			);
-
-			res.redirect(307, redirect_to);
 		} catch (error) {
 			console.log("Task completion error: ", error);
-
-			res.sendStatus(500);
+		} finally {
+			res.redirect(307, redirect_to);
 		}
 	}
 
@@ -196,7 +195,7 @@ export default class UserController {
 			if (!user) res.sendStatus(404);
 
 			const referees = await User.find({
-				referredBy: user.referralCode
+				referredBy: user.referralCode,
 			}).select("username dateJoined lastSignedIn");
 
 			res.json(referees);
@@ -214,6 +213,24 @@ export default class UserController {
 			return users;
 		} catch (error) {
 			throw error;
+		}
+	}
+
+	static async confirmTaskHandler(req, res) {
+		try {
+			const { id } = req;
+			const { task_id } = req.query;
+			const userTask = await UserTasks.exists({
+				taskId: task_id,
+				userId: id,
+			});
+
+			if (!userTask) return res.sendStatus(404);
+			else res.sendStatus(204);
+		} catch (error) {
+			console.log("User task completion confirmation error: ", error);
+
+			res.sendStatus(500);
 		}
 	}
 }

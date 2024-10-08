@@ -61,6 +61,7 @@ userRouter.get("/tasks/initialize", UserController.initializeTask);
 
 userRouter.use(UserController.authenticateUser);
 
+userRouter.get('/tasks/confirm', UserController.confirmTaskHandler);
 userRouter.get("/", UserController.getUserHandler);
 userRouter.get("/tasks", UserController.getUserTasksHandler);
 userRouter.get("/referees", UserController.getRefereesHandler);

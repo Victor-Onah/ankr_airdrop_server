@@ -12,7 +12,7 @@ config();
 
 const allowedOrigins = [
 	"https://web.telegram.org",
-	"https://ankr-airdrop.netlify.app"
+	"https://ankr-airdrop.netlify.app",
 ];
 
 process.env.NODE_ENV === "development" &&
@@ -27,7 +27,7 @@ const corsOptions = {
 		}
 	},
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-	optionsSuccessStatus: 204
+	optionsSuccessStatus: 204,
 };
 
 const app = express();
@@ -55,13 +55,17 @@ app.use(async (req, res, next) => {
 
 app.post("/telegram-webhook", TelegramBotController.handleRequest);
 app.get("/ping", (_, res) => res.send("Pong!"));
+app.get("/clear-daily-tasks", async (_, res) => {
+	res.sendStatus(204);
+	await UserController.clearExpiredUserDailyTasks();
+});
 
 // USER ROUTES
 userRouter.get("/tasks/initialize", UserController.initializeTask);
 
 userRouter.use(UserController.authenticateUser);
 
-userRouter.get('/tasks/confirm', UserController.confirmTaskHandler);
+userRouter.get("/tasks/confirm", UserController.confirmTaskHandler);
 userRouter.get("/", UserController.getUserHandler);
 userRouter.get("/tasks", UserController.getUserTasksHandler);
 userRouter.get("/referees", UserController.getRefereesHandler);
@@ -73,7 +77,7 @@ adminRouter.post("/tasks/create", AdminController.createTaskHandler);
 adminRouter.delete("/tasks/delete", AdminController.deleteTasksHandler);
 adminRouter.delete(
 	"/user/tasks/delete",
-	AdminController.deleteUserTasksHandler
+	AdminController.deleteUserTasksHandler,
 );
 adminRouter.get("/users", AdminController.getUsersHandler);
 

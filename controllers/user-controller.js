@@ -196,7 +196,7 @@ export default class UserController {
 
 			const referees = await User.find({
 				referredBy: user.referralCode,
-			}).select("username dateJoined lastSignedIn");
+			}).select("username dateJoined balance");
 
 			res.json(referees);
 		} catch (error) {

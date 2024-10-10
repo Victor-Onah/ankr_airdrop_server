@@ -143,7 +143,7 @@ export default class UserController {
 	}
 
 	static async initializeTask(req, res) {
-		const { task_id, redirect_to, from, id } = req.query;
+		const { task_id, id } = req.query;
 
 		try {
 			const isTaskAlreadyDone = await UserTasks.exists({
@@ -180,10 +180,12 @@ export default class UserController {
 					},
 				},
 			);
+
+			res.sendStatus(204);
 		} catch (error) {
 			console.log("Task completion error: ", error);
-		} finally {
-			res.redirect(307, redirect_to);
+
+			res.sendStatus(500);
 		}
 	}
 

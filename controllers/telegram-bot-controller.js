@@ -26,17 +26,17 @@ export default class TelegramBotController {
 				parse_mode: "Markdown",
 				reply_markup: keyboard
 					? {
-							inline_keyboard: [keyboard]
-					  }
-					: undefined
+							inline_keyboard: [keyboard],
+						}
+					: undefined,
 			};
 
 			const requestOptions = {
 				method: "POST",
 				body: JSON.stringify(requestBody),
 				headers: {
-					"Content-Type": "application/json"
-				}
+					"Content-Type": "application/json",
+				},
 			};
 
 			await fetch(telegramChatEndpoint, requestOptions);
@@ -51,7 +51,7 @@ export default class TelegramBotController {
 		if (command.startsWith("/start")) {
 			const userExists = await UserController.userExists({ id });
 			const containsReferralCode = /^\/start\s[a-zA-Z0-9]{10}$/.test(
-				command
+				command,
 			);
 
 			if (!userExists) {
@@ -61,29 +61,29 @@ export default class TelegramBotController {
 					lastName: last_name,
 					firstName: first_name,
 					referredBy: containsReferralCode
-						? command.split(" ")[0]
-						: undefined
+						? command.split(" ")[1]
+						: undefined,
 				});
 
 				containsReferralCode &&
 					(await UserController.updateUser(
 						{
-							referralCode: command.split(" ")[0]
+							referralCode: command.split(" ")[1],
 						},
 						{
 							totalReferrals: { type: "increment" },
 							balance: {
 								type: "increment",
-								step: 10
-							}
-						}
+								step: 10,
+							},
+						},
 					));
 			}
-		}
 
-		await TelegramBotController.#sendMessage(
-			id,
-			`**👋 Welcome to the Ankr Airdrop Bot!** \nIt's great to have you on board! 🎉\n\nClick on the button that says '**Sign in**' to continue!`
-		);
+			await TelegramBotController.#sendMessage(
+				id,
+				`**👋 Welcome to the Ankr Airdrop Bot!** \nIt's great to have you on board! 🎉\n\nClick on the button that says '**Sign in**' to continue!`,
+			);
+		}
 	}
 }

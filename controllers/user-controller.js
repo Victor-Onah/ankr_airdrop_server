@@ -119,9 +119,26 @@ export default class UserController {
 			const currentDate = new Date();
 
 			currentDate.setHours(0, 0, 0, 0);
-			await UserTasks.deleteMany({taskRecurrence: 'daily', completedAt: {
-				$lt: currentDate
-			}})
+			await UserTasks.deleteMany({
+				taskRecurrence: "daily",
+				completedAt: {
+					$lt: currentDate,
+				},
+			});
+
+			const allUserTasks = await UserTasks.find().select("userId");
+			const users = await User.find().select("id");
+
+			for (let { id } of users) {
+				await User.findOneAndUpdate(
+					{ id },
+					{
+						totalTasksCompleted: allUserTasks.filter(
+							(task) => task.userId === id,
+						).length,
+					},
+				);
+			}
 		} catch (error) {
 			console.log("DB cleanup error: ", error);
 		}

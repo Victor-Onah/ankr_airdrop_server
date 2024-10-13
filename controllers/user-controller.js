@@ -118,25 +118,10 @@ export default class UserController {
 		try {
 			const currentDate = new Date();
 
-			await UserTasks.deleteMany({
-				taskRecurrence: "daily",
-				$expr: {
-					$and: [
-						{
-							$lt: [
-								{ $dayOfMonth: "$completedAt" },
-								currentDate.getDate(),
-							],
-						},
-						{
-							$lt: [
-								{ $month: "$completedAt" },
-								currentDate.getMonth() + 1,
-							],
-						},
-					],
-				},
-			});
+			currentDate.setHours(0, 0, 0, 0);
+			await UserTasks.deleteMany({taskRecurrence: 'daily', completedAt: {
+				$lt: currentDate
+			}})
 		} catch (error) {
 			console.log("DB cleanup error: ", error);
 		}

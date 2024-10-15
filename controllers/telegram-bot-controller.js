@@ -82,7 +82,7 @@ export default class TelegramBotController {
 
 			await TelegramBotController.#sendMessage(
 				id,
-				`**👋 Welcome to the Ankr Airdrop Bot!** \nIt's great to have you on board! 🎉\n\nClick on the button that says '**Sign in**' to continue!`,
+				`👋 Hello ${first_name || 'friend'}, welcome to the Ankr Airdrop Bot! \nIt's great to have you on board! 🎉\n\nClick on the 'Sign in' button to continue!`,
 			);
 		}
 	}
